@@ -1,4 +1,4 @@
-FROM ferqui/ros:mesa
+FROM ferqui/ros
 
 RUN apt-get update && \
         apt-get install -y \
