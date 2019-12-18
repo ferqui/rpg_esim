@@ -57,10 +57,10 @@ RUN /bin/bash -c 'source /ros_entrypoint.sh && catkin build esim_ros'
 RUN echo "source /sim_ws/devel/setup.bash" >> /setupeventsim.sh
 RUN chmod +x /setupeventsim.sh
 
+RUN echo alias ssim='source /setupeventsim.sh'
+RUN echo "source /setupeventsim.sh" >> ~/.bashrc
+
 COPY entrypoint.sh /entrypoint.sh
-
 ENTRYPOINT [ "/entrypoint.sh" ]
-
-#RUN echo "source /sim_ws/devel/setup.bash" >> ~/.bashrc
 
 WORKDIR /
