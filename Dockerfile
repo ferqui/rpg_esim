@@ -1,4 +1,4 @@
-FROM mesa
+FROM ferqui/ros:mesa
 
 RUN apt-get update && \
         apt-get install -y \
@@ -30,7 +30,6 @@ WORKDIR /sim_ws
 RUN catkin config --extend /opt/ros/melodic --cmake-args -DCMAKE_BUILD_TYPE=Release -DCMAKE_CXX_FLAGS=-Wno-int-in-bool-context
 
 WORKDIR /sim_ws/src
-#RUN git clone https://github.com/uzh-rpg/rpg_esim.git
 COPY . rpg_esim/
 RUN sed -i -e's/git\@github.com:/https:\/\/github.com\//g' rpg_esim/dependencies.yaml
 
@@ -55,6 +54,13 @@ RUN touch imp_3rdparty_cuda_toolkit/CATKIN_IGNORE \
       ze_trajectory_analysis/CATKIN_IGNORE
 RUN /bin/bash -c 'source /ros_entrypoint.sh && catkin build esim_ros'
 
-RUN echo "source /sim_ws/devel/setup.bash" >> ~/.bashrc
+RUN echo "source /sim_ws/devel/setup.bash" >> /setupeventsim.sh
+RUN chmod +x /setupeventsim.sh
+
+COPY entrypoint.sh /entrypoint.sh
+
+ENTRYPOINT [ "/entrypoint.sh" ]
+
+#RUN echo "source /sim_ws/devel/setup.bash" >> ~/.bashrc
 
 WORKDIR /
